@@ -3,9 +3,10 @@ export default function Cart({ cart }) {
 
   return (
     <div className="cart">
-      <h2>Cart</h2>
-      <p>Total: {total} kr</p>
-      <button>Checkout</button>
+      <h3>Cart</h3>
+      <p>{cart.length} items</p>
+      <p className="total">Total: {total} kr</p>
+      <button className="checkout">Checkout</button>
     </div>
   );
 }
