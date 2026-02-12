@@ -8,3 +8,6 @@ const handleCheckout = async () => {
   const data = await res.json();
   window.location.href = data.url;
 };
+<button className="checkout" onClick={handleCheckout}>
+  Checkout
+</button>
