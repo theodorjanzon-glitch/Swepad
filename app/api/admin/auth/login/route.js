@@ -1,35 +1,17 @@
-'use strict';
+import { NextResponse } from 'next/server';
 
-const express = require('express');
-const jwt = require('jsonwebtoken');
-const router = express.Router();
-
-// Dummy user for demonstration (replace with your actual user retrieval logic)
 const adminUser = {
-    email: 'admin@example.com', // replace with your actual admin email
-    password: 'password123' // replace with your actual admin password or hash
+  email: process.env.ADMIN_EMAIL || 'admin@example.com',
+  password: process.env.ADMIN_PASSWORD || 'password123',
 };
 
-// Middleware to validate login data
-const validateLoginData = (req, res, next) => {
-    const { email, password } = req.body;
-    if (!email || !password) {
-        return res.status(400).json({ message: 'Email and password are required.' });
-    }
-    next();
-};
-
-// POST /admin/auth/login
-router.post('/login', validateLoginData, (req, res) => {
-    const { email, password } = req.body;
-    
-    // Validate admin credentials (replace with your actual validation logic)
-    if (email === adminUser.email && password === adminUser.password) {
-        // Create JWT token
-        const token = jwt.sign({ email: adminUser.email }, 'your_jwt_secret', { expiresIn: '1h' }); // use a secure secret
-        return res.status(200).json({ token });
-    }
-    return res.status(401).json({ message: 'Invalid email or password.' });
-});
-
-module.exports = router;
+export async function POST(request) {
+  const { email, password } = await request.json();
+  if (!email || !password) {
+    return NextResponse.json({ message: 'Email and password are required.' }, { status: 400 });
+  }
+  if (email === adminUser.email && password === adminUser.password) {
+    return NextResponse.json({ success: true });
+  }
+  return NextResponse.json({ message: 'Invalid email or password.' }, { status: 401 });
+}
