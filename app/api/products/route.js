@@ -1,13 +1,13 @@
-'use client';
-
-import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs';
+import { createClient } from '@supabase/supabase-js';
 
 export async function GET(req) {
+  const supabase = createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+  );
   const { searchParams } = new URL(req.url);
   const category = searchParams.get('category');
   const searchQuery = searchParams.get('search');
-
-  const supabase = createServerSupabaseClient({ req });
 
   let query = supabase.from('products').select('*');
 

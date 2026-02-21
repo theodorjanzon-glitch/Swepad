@@ -5,7 +5,7 @@ const supabase = createClient('your-supabase-url', 'your-supabase-key');
 
 // Handle GET request to fetch a product by ID
 export async function GET(req, { params }) {
-    const { id } = params;
+    const { id } = await params;
 
     const { data, error } = await supabase
         .from('products')
