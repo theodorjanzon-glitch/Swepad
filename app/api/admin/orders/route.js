@@ -1,21 +1,10 @@
-// orders API endpoint
+import { NextResponse } from 'next/server';
 
-import express from 'express';
+export async function GET() {
+    return NextResponse.json([]);
+}
 
-const router = express.Router();
-
-// Retrieve all orders
-router.get('/', (req, res) => {
-    // Logic to fetch and return all orders
-    res.send('Fetching all orders...');
-});
-
-// Create a new order
-router.post('/', (req, res) => {
-    // Logic to create a new order
-    const newOrder = req.body;
-    res.status(201).send(`Order created: ${JSON.stringify(newOrder)}`);
-});
-
-// Export the router
-export default router;
+export async function POST(request) {
+    const newOrder = await request.json();
+    return NextResponse.json(newOrder, { status: 201 });
+}
