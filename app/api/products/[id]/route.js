@@ -1,11 +1,13 @@
 import { createClient } from '@supabase/supabase-js';
 
-// Initialize Supabase client
-const supabase = createClient('your-supabase-url', 'your-supabase-key');
-
 // Handle GET request to fetch a product by ID
 export async function GET(req, { params }) {
     const { id } = params;
+
+    const supabase = createClient(
+        process.env.NEXT_PUBLIC_SUPABASE_URL,
+        process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+    );
 
     const { data, error } = await supabase
         .from('products')

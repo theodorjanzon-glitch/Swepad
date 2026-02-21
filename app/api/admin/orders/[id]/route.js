@@ -10,7 +10,7 @@ export async function PUT(request, { params }) {
     // const updatedOrder = await updateOrder(id, body);
 
     // Assuming the update was successful, you would return a response
-    return NextResponse.json({ message: `Order ${id} updated successfully`, // updatedOrder });
+    return NextResponse.json({ message: `Order ${id} updated successfully` });
 }
 
 export async function GET(request, { params }) {
@@ -18,5 +18,5 @@ export async function GET(request, { params }) {
     // Logic to fetch order information by ID
     // const order = await getOrderById(id);
 
-    return NextResponse.json({ message: `Fetching order ${id}`, // order });
+    return NextResponse.json({ message: `Fetching order ${id}` });
 }
