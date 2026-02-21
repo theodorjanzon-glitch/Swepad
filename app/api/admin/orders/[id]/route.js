@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 
 // Update order by ID
 export async function PUT(request, { params }) {
-    const { id } = params;
+    const { id } = await params;
     const body = await request.json();
 
     // Here you'll typically have logic to update the order in your database
@@ -14,7 +14,7 @@ export async function PUT(request, { params }) {
 }
 
 export async function GET(request, { params }) {
-    const { id } = params;
+    const { id } = await params;
     // Logic to fetch order information by ID
     // const order = await getOrderById(id);
 
