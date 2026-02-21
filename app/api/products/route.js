@@ -1,21 +1,29 @@
-import { prisma } from "@/lib/prisma";
+'use client';
 
-export async function POST(req) {
-  const body = await req.json();
+import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs';
 
-  const product = await prisma.product.create({
-    data: body,
-  });
+export async function GET(req) {
+  const { searchParams } = new URL(req.url);
+  const category = searchParams.get('category');
+  const searchQuery = searchParams.get('search');
 
-  return Response.json(product);
-}
+  const supabase = createServerSupabaseClient({ req });
 
-export async function DELETE(req) {
-  const { id } = await req.json();
+  let query = supabase.from('products').select('*');
 
-  await prisma.product.delete({
-    where: { id },
-  });
+  if (category) {
+    query = query.eq('category', category);
+  }
 
-  return Response.json({ success: true });
+  if (searchQuery) {
+    query = query.ilike('name', `%${searchQuery}%`);
+  }
+
+  const { data, error } = await query;
+
+  if (error) {
+    return new Response(JSON.stringify({ error: error.message }), { status: 500 });
+  }
+
+  return new Response(JSON.stringify(data), { status: 200 });
 }
