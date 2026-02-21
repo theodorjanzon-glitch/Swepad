@@ -1,5 +1,6 @@
+"use client";
+
 import React, { useState } from 'react';
-import axios from 'axios';
 
 const LoginPage = () => {
     const [email, setEmail] = useState('');
@@ -10,9 +11,12 @@ const LoginPage = () => {
         e.preventDefault();
         setError(null);
         try {
-            const response = await axios.post('/api/admin/auth/login', {email, password});
-            const { token } = response.data;
-            localStorage.setItem('token', token);
+            const res = await fetch('/api/admin/auth/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email, password }),
+            });
+            if (!res.ok) throw new Error('Invalid credentials');
             // Handle successful login (e.g., redirect user)
         } catch (err) {
             setError('Login failed. Please check your credentials.');

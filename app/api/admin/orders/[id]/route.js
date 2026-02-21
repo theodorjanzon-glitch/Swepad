@@ -1,22 +1,22 @@
 import { NextResponse } from 'next/server';
-
-// Update order by ID
-export async function PUT(request, { params }) {
-    const { id } = params;
-    const body = await request.json();
-
-    // Here you'll typically have logic to update the order in your database
-    // For example:
-    // const updatedOrder = await updateOrder(id, body);
-
-    // Assuming the update was successful, you would return a response
-    return NextResponse.json({ message: `Order ${id} updated successfully`, // updatedOrder });
-}
+import { prisma } from '@/lib/prisma';
 
 export async function GET(request, { params }) {
-    const { id } = params;
-    // Logic to fetch order information by ID
-    // const order = await getOrderById(id);
+  const { id } = params;
+  const order = await prisma.order.findUnique({
+    where: { id: parseInt(id) },
+    include: { orderItems: { include: { product: true } } },
+  });
+  if (!order) return NextResponse.json({ message: 'Order not found' }, { status: 404 });
+  return NextResponse.json(order);
+}
 
-    return NextResponse.json({ message: `Fetching order ${id}`, // order });
+export async function PUT(request, { params }) {
+  const { id } = params;
+  const body = await request.json();
+  const order = await prisma.order.update({
+    where: { id: parseInt(id) },
+    data: body,
+  });
+  return NextResponse.json(order);
 }
